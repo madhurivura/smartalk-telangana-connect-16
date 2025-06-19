@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState('English');
+  const { language, setLanguage, t } = useLanguage();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -15,7 +16,7 @@ const Navbar = () => {
   };
 
   const toggleLanguage = () => {
-    setLanguage(language === 'English' ? 'Telugu' : 'English');
+    setLanguage(language === 'english' ? 'telugu' : 'english');
   };
 
   return (
@@ -34,25 +35,25 @@ const Navbar = () => {
                 onClick={() => scrollToSection('about')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                About
+                {t('nav.about')}
               </button>
               <button 
                 onClick={() => scrollToSection('features')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Features
+                {t('nav.features')}
               </button>
               <button 
-                onClick={() => scrollToSection('chatbot')}
+                onClick={()? scrollToSection('chatbot')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Chatbot
+                {t('nav.chatbot')}
               </button>
               <button 
                 onClick={() => scrollToSection('contact')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Contact
+                {t('nav.contact')}
               </button>
             </div>
           </div>
@@ -64,7 +65,7 @@ const Navbar = () => {
               className="flex items-center space-x-2 bg-[#44646f] text-white px-3 py-1 rounded-md text-sm hover:bg-opacity-90 transition-colors"
             >
               <Globe size={16} />
-              <span>{language}</span>
+              <span>{language === 'english' ? 'తెలుగు' : 'English'}</span>
             </button>
 
             {/* Mobile menu button */}
@@ -87,25 +88,25 @@ const Navbar = () => {
                 onClick={() => scrollToSection('about')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
-                About
+                {t('nav.about')}
               </button>
               <button 
                 onClick={() => scrollToSection('features')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
-                Features
+                {t('nav.features')}
               </button>
               <button 
                 onClick={() => scrollToSection('chatbot')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
-                Chatbot
+                {t('nav.chatbot')}
               </button>
               <button 
                 onClick={() => scrollToSection('contact')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
-                Contact
+                {t('nav.contact')}
               </button>
             </div>
           </div>

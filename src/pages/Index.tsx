@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Advantages from '@/components/Advantages';
 import ValueProposition from '@/components/ValueProposition';
-import Features from '@/components/Features';
+import FeaturesShowcase from '@/components/FeaturesShowcase';
 import Blog from '@/components/Blog';
 import MobileShowcase from '@/components/MobileShowcase';
 import ChatbotSection from '@/components/ChatbotSection';
@@ -18,7 +18,7 @@ const Index = () => {
       <Hero />
       <Advantages />
       <ValueProposition />
-      <Features />
+      <FeaturesShowcase />
       <Blog />
       <MobileShowcase />
       <ChatbotSection />
