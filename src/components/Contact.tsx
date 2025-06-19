@@ -1,8 +1,10 @@
 
 import React, { useState } from 'react';
 import { Mail, User, MessageSquare, Send } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Contact = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,10 +30,10 @@ const Contact = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#3c392b] mb-4">
-            Get in Touch
+            {t('contact.title')}
           </h2>
           <p className="text-lg text-[#5d5c54]">
-            Have questions or feedback? We'd love to hear from you.
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -40,7 +42,7 @@ const Contact = () => {
             {/* Name Field */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-[#3c392b] mb-2">
-                Full Name
+                {t('contact.fullName')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -54,7 +56,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-[#cbccc1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#44646f] focus:border-transparent"
-                  placeholder="Enter your full name"
+                  placeholder={t('contact.enterName')}
                 />
               </div>
             </div>
@@ -62,7 +64,7 @@ const Contact = () => {
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-[#3c392b] mb-2">
-                Email Address
+                {t('contact.emailAddress')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -76,7 +78,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-[#cbccc1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#44646f] focus:border-transparent"
-                  placeholder="Enter your email address"
+                  placeholder={t('contact.enterEmail')}
                 />
               </div>
             </div>
@@ -84,7 +86,7 @@ const Contact = () => {
             {/* Message Field */}
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-[#3c392b] mb-2">
-                Message
+                {t('contact.message')}
               </label>
               <div className="relative">
                 <div className="absolute top-3 left-3 pointer-events-none">
@@ -98,7 +100,7 @@ const Contact = () => {
                   required
                   rows={5}
                   className="block w-full pl-10 pr-3 py-3 border border-[#cbccc1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#44646f] focus:border-transparent resize-none"
-                  placeholder="Tell us how we can help you..."
+                  placeholder={t('contact.messagePlaceholder')}
                 />
               </div>
             </div>
@@ -110,7 +112,7 @@ const Contact = () => {
                 className="w-full bg-[#44646f] hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
               >
                 <Send size={20} />
-                <span>Send Message</span>
+                <span>{t('contact.sendMessage')}</span>
               </button>
             </div>
           </form>
@@ -118,10 +120,10 @@ const Contact = () => {
           {/* Contact Info */}
           <div className="mt-8 pt-8 border-t border-[#cbccc1] text-center">
             <p className="text-[#5d5c54] mb-2">
-              For technical support, reach out to our team
+              {t('contact.supportText')}
             </p>
             <p className="text-[#44646f] font-medium">
-              smarttalk.telangana@gov.in
+              {t('contact.supportEmail')}
             </p>
           </div>
         </div>

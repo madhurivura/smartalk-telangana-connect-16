@@ -14,22 +14,22 @@ const FeaturesShowcase: React.FC = () => {
     {
       id: 'chatbot',
       icon: <MessageCircle size={32} className="text-[#44646f]" />,
-      title: "Telugu Chatbot",
-      description: "Chat in Telugu or English for instant help",
+      title: t('features.teluguChatbot'),
+      description: t('features.teluguChatbotDesc'),
       component: <EnhancedChatbot />
     },
     {
       id: 'tdocs',
       icon: <FileText size={32} className="text-[#44646f]" />,
-      title: "T-Docs",
-      description: "Document recommender for your specific needs",
+      title: t('features.tdocs'),
+      description: t('features.tdocsDesc'),
       component: <TDocsSystem />
     },
     {
       id: 'enagrik',
       icon: <CreditCard size={32} className="text-[#44646f]" />,
-      title: "e-Nagrik Cards",
-      description: "Visual guides for government processes",
+      title: t('features.enagrik'),
+      description: t('features.enagrikDesc'),
       component: <ENagrikCards />
     }
   ];
@@ -55,7 +55,7 @@ const FeaturesShowcase: React.FC = () => {
               onClick={closeFeature}
               className="bg-[#44646f] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
             >
-              ← Back to Features
+              {t('features.backToFeatures')}
             </button>
           </div>
           {feature?.component}
@@ -69,10 +69,10 @@ const FeaturesShowcase: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#3c392b] mb-4">
-            Powerful Features
+            {t('features.title')}
           </h2>
           <p className="text-lg text-[#5d5c54] max-w-2xl mx-auto">
-            Everything you need to navigate government services with confidence
+            {t('features.subtitle')}
           </p>
         </div>
 
@@ -93,7 +93,7 @@ const FeaturesShowcase: React.FC = () => {
                 {feature.description}
               </p>
               <button className="text-[#44646f] hover:text-[#3c392b] font-medium transition-colors">
-                Try Now →
+                {t('features.tryNow')} →
               </button>
             </div>
           ))}
@@ -104,13 +104,13 @@ const FeaturesShowcase: React.FC = () => {
               <Mic size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              Voice Input
+              {t('features.voiceInput')}
             </h3>
             <p className="text-[#5d5c54] leading-relaxed">
-              Speak your questions naturally in Telugu or English
+              {t('features.voiceInputDesc')}
             </p>
             <div className="mt-4 text-sm text-[#5d5c54]">
-              ✓ Integrated in chatbot and forms
+              {t('features.integratedInChatbot')}
             </div>
           </div>
 
@@ -119,13 +119,13 @@ const FeaturesShowcase: React.FC = () => {
               <Volume2 size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              Text-to-Speech
+              {t('features.textToSpeech')}
             </h3>
             <p className="text-[#5d5c54] leading-relaxed">
-              Listen to responses in your preferred language
+              {t('features.textToSpeechDesc')}
             </p>
             <div className="mt-4 text-sm text-[#5d5c54]">
-              ✓ Available in chatbot responses
+              {t('features.availableInChatbot')}
             </div>
           </div>
 
@@ -134,13 +134,13 @@ const FeaturesShowcase: React.FC = () => {
               <Download size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              PDF Generator
+              {t('features.pdfGenerator')}
             </h3>
             <p className="text-[#5d5c54] leading-relaxed">
-              Download forms and checklists instantly
+              {t('features.pdfGeneratorDesc')}
             </p>
             <div className="mt-4 text-sm text-[#5d5c54]">
-              ✓ Integrated in T-Docs and e-Nagrik Cards
+              {t('features.integratedInTDocs')}
             </div>
           </div>
         </div>

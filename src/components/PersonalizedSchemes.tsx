@@ -1,17 +1,20 @@
 
 import React from 'react';
 import { Users, Award, Heart } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const PersonalizedSchemes = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-20 bg-[#cbccc1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#3c392b] mb-4">
-            Find Your Eligible Schemes
+            {t('schemes.title')}
           </h2>
           <p className="text-lg text-[#5d5c54]">
-            Discover government schemes tailored for you based on your profile
+            {t('schemes.subtitle')}
           </p>
         </div>
 
@@ -21,13 +24,13 @@ const PersonalizedSchemes = () => {
               <Users size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              Pension Schemes
+              {t('schemes.pensionSchemes')}
             </h3>
             <p className="text-[#5d5c54] mb-4">
-              Old age, widow, and disability pensions for eligible citizens
+              {t('schemes.pensionSchemesDesc')}
             </p>
             <div className="text-sm text-[#44646f] font-medium">
-              Monthly benefits up to ₹3,016
+              {t('schemes.pensionBenefits')}
             </div>
           </div>
 
@@ -36,13 +39,13 @@ const PersonalizedSchemes = () => {
               <Award size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              Education Support
+              {t('schemes.educationSupport')}
             </h3>
             <p className="text-[#5d5c54] mb-4">
-              Scholarships and educational assistance for students
+              {t('schemes.educationSupportDesc')}
             </p>
             <div className="text-sm text-[#44646f] font-medium">
-              Various amounts based on category
+              {t('schemes.educationBenefits')}
             </div>
           </div>
 
@@ -51,28 +54,28 @@ const PersonalizedSchemes = () => {
               <Heart size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              Healthcare Benefits
+              {t('schemes.healthcareBenefits')}
             </h3>
             <p className="text-[#5d5c54] mb-4">
-              Medical insurance and healthcare support schemes
+              {t('schemes.healthcareBenefitsDesc')}
             </p>
             <div className="text-sm text-[#44646f] font-medium">
-              Coverage up to ₹5 lakhs
+              {t('schemes.healthcareCoverage')}
             </div>
           </div>
         </div>
 
         <div className="text-center mt-12">
           <p className="text-lg text-[#5d5c54] mb-6">
-            Use our smart assistant below to find schemes you're eligible for
+            {t('schemes.howItWorks')}
           </p>
           <div className="bg-[#44646f] bg-opacity-10 rounded-lg p-6 max-w-2xl mx-auto">
-            <h4 className="font-semibold text-[#3c392b] mb-2">How it works:</h4>
+            <h4 className="font-semibold text-[#3c392b] mb-2">{t('schemes.howItWorksTitle')}</h4>
             <ol className="text-left text-[#5d5c54] space-y-2">
-              <li>1. Answer a few simple questions about yourself</li>
-              <li>2. Our AI will analyze your eligibility</li>
-              <li>3. Get a personalized list of schemes you can apply for</li>
-              <li>4. Download detailed information and application process</li>
+              <li>{t('schemes.step1')}</li>
+              <li>{t('schemes.step2')}</li>
+              <li>{t('schemes.step3')}</li>
+              <li>{t('schemes.step4')}</li>
             </ol>
           </div>
         </div>

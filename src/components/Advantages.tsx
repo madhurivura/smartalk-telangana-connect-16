@@ -1,23 +1,26 @@
 
 import React from 'react';
 import { Smartphone, Globe, UserCheck } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Advantages = () => {
+  const { t } = useLanguage();
+  
   const advantages = [
     {
       icon: <Smartphone size={48} className="text-[#44646f]" />,
-      title: "Ease of Access",
-      description: "Access government services from anywhere, anytime. No need to visit offices or stand in long queues."
+      title: t('advantages.easeOfAccess'),
+      description: t('advantages.easeOfAccessDesc')
     },
     {
       icon: <Globe size={48} className="text-[#44646f]" />,
-      title: "Multilingual Support",
-      description: "Get help in Telugu and English. Speak or type in your preferred language for better understanding."
+      title: t('advantages.multilingualSupport'),
+      description: t('advantages.multilingualSupportDesc')
     },
     {
       icon: <UserCheck size={48} className="text-[#44646f]" />,
-      title: "Personalized Guidance",
-      description: "Receive step-by-step guidance tailored to your specific needs and document requirements."
+      title: t('advantages.personalizedGuidance'),
+      description: t('advantages.personalizedGuidanceDesc')
     }
   ];
 
@@ -26,10 +29,10 @@ const Advantages = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#3c392b] mb-4">
-            Why Choose SmartTalk?
+            {t('advantages.title')}
           </h2>
           <p className="text-lg text-[#5d5c54] max-w-2xl mx-auto">
-            Designed specifically for the people of Telangana to bridge the gap between citizens and government services.
+            {t('advantages.subtitle')}
           </p>
         </div>
 
