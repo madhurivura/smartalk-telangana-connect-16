@@ -44,7 +44,7 @@ const Navbar = () => {
                 {t('nav.features')}
               </button>
               <button 
-                onClick={()? scrollToSection('chatbot')}
+                onClick={() => scrollToSection('chatbot')}
                 className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 {t('nav.chatbot')}
