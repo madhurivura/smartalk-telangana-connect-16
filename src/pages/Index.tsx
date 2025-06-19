@@ -5,9 +5,9 @@ import Hero from '@/components/Hero';
 import Advantages from '@/components/Advantages';
 import ValueProposition from '@/components/ValueProposition';
 import FeaturesShowcase from '@/components/FeaturesShowcase';
-import Blog from '@/components/Blog';
+import PersonalizedSchemes from '@/components/PersonalizedSchemes';
 import MobileShowcase from '@/components/MobileShowcase';
-import ChatbotSection from '@/components/ChatbotSection';
+import SmartChatbot from '@/components/SmartChatbot';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 
@@ -19,9 +19,21 @@ const Index = () => {
       <Advantages />
       <ValueProposition />
       <FeaturesShowcase />
-      <Blog />
+      <PersonalizedSchemes />
       <MobileShowcase />
-      <ChatbotSection />
+      <section id="chatbot" className="py-20 bg-[#3c392b]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#e1dbd1] mb-4">
+              Find Your Eligible Schemes
+            </h2>
+            <p className="text-lg text-[#cbccc1]">
+              Answer a few questions to discover government schemes you can apply for
+            </p>
+          </div>
+          <SmartChatbot />
+        </div>
+      </section>
       <Contact />
       <Footer />
     </div>
