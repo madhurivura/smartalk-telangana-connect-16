@@ -18,6 +18,8 @@ const Index = () => {
   // Fix auto-scroll bug by ensuring page loads at top
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Prevent any auto-focus that might cause scrolling
+    document.body.focus();
   }, []);
   
   return (
