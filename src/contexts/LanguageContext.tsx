@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'english' | 'telugu';
@@ -145,6 +144,44 @@ const translations = {
     'common.submit': 'Submit',
     'common.close': 'Close',
     'common.days': 'days',
+    
+    // Features (updated)
+    'features.meesevaLocator': 'Meeseva Center Locator',
+    'features.meesevaLocatorDesc': 'Find nearby Meeseva centers using your location',
+    'features.locationServices': 'Location Services',
+    'features.locationServicesDesc': 'GPS-enabled services to help you find nearby government offices',
+    'features.integratedInMeeseva': '✓ Integrated in Meeseva center locator',
+    
+    // Government Portals
+    'portals.title': 'Essential Government Portals',
+    'portals.subtitle': 'Direct access to key Telangana government services and platforms',
+    'portals.visitSite': 'Visit Site',
+    'portals.bhuvan': 'Bhuvan NRSC',
+    'portals.bhuvanDesc': 'Satellite mapping and land services',
+    'portals.telanganaPortal': 'Telangana State Portal',
+    'portals.telanganaPortalDesc': 'Official government announcements and services',
+    'portals.epass': 'Telangana ePASS',
+    'portals.epassDesc': 'Scholarship services for students',
+    'portals.prajavani': 'PrajaVani',
+    'portals.prajavaniDesc': 'Public grievance redressal system',
+    'portals.ipass': 'iPASS',
+    'portals.ipassDesc': 'Industrial promotion and approvals',
+    'portals.meeseva': 'Meeseva Portal',
+    'portals.meesevaDesc': 'All-in-one e-Governance services',
+    
+    // Meeseva Center Locator
+    'meeseva.title': 'Find Nearby Meeseva Centers',
+    'meeseva.subtitle': 'Locate the nearest Meeseva centers for in-person government services',
+    'meeseva.findNearby': 'Find Nearby Centers',
+    'meeseva.locating': 'Getting Your Location...',
+    'meeseva.searching': 'Searching for nearby centers...',
+    'meeseva.nearbycenters': 'Nearby Centers',
+    'meeseva.directions': 'Get Directions',
+    'meeseva.tryAgain': 'Try Again',
+    'meeseva.locationDenied': 'We need your location to show nearby Meeseva centers. Please enable location access in your browser.',
+    'meeseva.noGeolocation': 'Your browser does not support location services.',
+    'meeseva.fetchError': 'Unable to fetch nearby centers. Please try again later.',
+    'meeseva.noCenters': 'No Meeseva centers found near your area right now.',
   },
   telugu: {
     // Navigation
@@ -281,6 +318,44 @@ const translations = {
     'common.submit': 'సమర్పించు',
     'common.close': 'మూసివేయు',
     'common.days': 'రోజులు',
+    
+    // Features (updated)
+    'features.meesevaLocator': 'మీసేవ కేంద్రాల గుర్తింపు',
+    'features.meesevaLocatorDesc': 'మీ స్థానాన్ని ఉపయోగించి సమీపంలోని మీసేవ కేంద్రాలను కనుగొనండి',
+    'features.locationServices': 'లొకేషన్ సేవలు',
+    'features.locationServicesDesc': 'సమీపంలోని ప్రభుత్వ కార్యాలయాలను కనుగొనడంలో మీకు సహాయపడే GPS-ఆధారిత సేవలు',
+    'features.integratedInMeeseva': '✓ మీసేవ కేంద్ర లొకేటర్‌లో విలీనం చేయబడింది',
+    
+    // Government Portals
+    'portals.title': 'ప్రధాన ప్రభుత్వ పోర్టల్స్',
+    'portals.subtitle': 'ప్రధాన తెలంగాణ ప్రభుత్వ సేవలు మరియు ప్లాట్‌ఫారములకు ప్రత్యక్ష ప్రాప్యత',
+    'portals.visitSite': 'సైట్‌ను సందర్శించండి',
+    'portals.bhuvan': 'భువన్ NRSC',
+    'portals.bhuvanDesc': 'ఉపగ్రహ మ్యాపింగ్ మరియు భూమి సేవలు',
+    'portals.telanganaPortal': 'తెలంగాణ రాష్ట్ర్ పోర్టల్',
+    'portals.telanganaPortalDesc': 'అధికారిక ప్రభుత్వ ప్రకటనలు మరియు సేవలు',
+    'portals.epass': 'తెలంగాణ ePASS',
+    'portals.epassDesc': 'విద్యార్థుల కోసం స్కాలర్‌షిప్ సేవలు',
+    'portals.prajavani': 'ప్రజావాణి',
+    'portals.prajavaniDesc': 'ప్రజా ఫిర్యాదుల పరిష్కార వ్యవస్థ',
+    'portals.ipass': 'iPASS',
+    'portals.ipassDesc': 'పరిశ్రమల ప్రోత్సాహం మరియు అనుమతులు',
+    'portals.meeseva': 'మీసేవ పోర్టల్',
+    'portals.meesevaDesc': 'అన్ని-ఒకే-చోట ఇ-గవర్నెన్స్ సేవలు',
+    
+    // Meeseva Center Locator
+    'meeseva.title': 'సమీపంలోని మీసేవ కేంద్రాలను కనుగొనండి',
+    'meeseva.subtitle': 'వ్యక్తిగతంగా ప్రభుత్వ సేవల కోసం సమీప మీసేవ కేంద్రాలను గుర్తించండి',
+    'meeseva.findNearby': 'సమీప కేంద్రాలను కనుగొనండి',
+    'meeseva.locating': 'మీ స్థానాన్ని పొందుతోంది...',
+    'meeseva.searching': 'సమీప కేంద్రాల కోసం వెతుకుతోంది...',
+    'meeseva.nearbycenters': 'సమీప కేంద్రాలు',
+    'meeseva.directions': 'దిశలను పొందండి',
+    'meeseva.tryAgain': 'మళ్లీ ప్రయత్నించండి',
+    'meeseva.locationDenied': 'సమీపంలోని మీసేవ కేంద్రాలను చూపించడానికి మాకు మీ స్థానం అవసరం. దయచేసి మీ బ్రౌజర్‌లో లొకేషన్ యాక్సెస్‌ను ప్రారంభించండి.',
+    'meeseva.noGeolocation': 'మీ బ్రౌజర్ లొకేషన్ సేవలకు మద్దతు ఇవ్వదు.',
+    'meeseva.fetchError': 'సమీప కేంద్రాలను పొందలేకపోయాము. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.',
+    'meeseva.noCenters': 'ప్రస్తుతం మీ ప్రాంతానికి సమీపంలో మీసేవ కేంద్రాలు కనుగొనబడలేదు.',
   }
 };
 

@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
-import { MessageCircle, FileText, CreditCard, Mic, Volume2, Download } from 'lucide-react';
+import { MessageCircle, FileText, CreditCard, MapPin, Volume2, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import TDocsSystem from './TDocsSystem';
 import ENagrikCards from './ENagrikCards';
 import EnhancedChatbot from './EnhancedChatbot';
+import MeesevaCenterLocator from './MeesevaCenterLocator';
 
 const FeaturesShowcase: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
@@ -31,6 +32,52 @@ const FeaturesShowcase: React.FC = () => {
       title: t('features.enagrik'),
       description: t('features.enagrikDesc'),
       component: <ENagrikCards />
+    },
+    {
+      id: 'meeseva',
+      icon: <MapPin size={32} className="text-[#44646f]" />,
+      title: t('features.meesevaLocator'),
+      description: t('features.meesevaLocatorDesc'),
+      component: <MeesevaCenterLocator />
+    }
+  ];
+
+  const governmentPortals = [
+    {
+      name: t('portals.bhuvan'),
+      description: t('portals.bhuvanDesc'),
+      url: 'https://bhuvan.nrsc.gov.in/',
+      icon: '🛰️'
+    },
+    {
+      name: t('portals.telanganaPortal'),
+      description: t('portals.telanganaPortalDesc'),
+      url: 'https://www.telangana.gov.in/',
+      icon: '🏛️'
+    },
+    {
+      name: t('portals.epass'),
+      description: t('portals.epassDesc'),
+      url: 'https://telanganaepass.cgg.gov.in/',
+      icon: '🎓'
+    },
+    {
+      name: t('portals.prajavani'),
+      description: t('portals.prajavaniDesc'),
+      url: 'https://prajavani.telangana.gov.in',
+      icon: '🗣️'
+    },
+    {
+      name: t('portals.ipass'),
+      description: t('portals.ipassDesc'),
+      url: 'https://ipass.telangana.gov.in/',
+      icon: '🧑‍💼'
+    },
+    {
+      name: t('portals.meeseva'),
+      description: t('portals.meesevaDesc'),
+      url: 'https://meeseva.telangana.gov.in/meeseva/home.htm',
+      icon: '🧾'
     }
   ];
 
@@ -76,7 +123,8 @@ const FeaturesShowcase: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Main Features */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {features.map((feature, index) => (
             <div
               key={index}
@@ -97,23 +145,50 @@ const FeaturesShowcase: React.FC = () => {
               </button>
             </div>
           ))}
+        </div>
 
-          {/* Additional feature cards showing capabilities */}
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="bg-[#44646f] bg-opacity-10 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
-              <Mic size={32} className="text-[#44646f]" />
-            </div>
-            <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              {t('features.voiceInput')}
+        {/* Government Portals Section */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl md:text-3xl font-bold text-[#3c392b] mb-4">
+              {t('portals.title')}
             </h3>
-            <p className="text-[#5d5c54] leading-relaxed">
-              {t('features.voiceInputDesc')}
+            <p className="text-lg text-[#5d5c54] max-w-2xl mx-auto">
+              {t('portals.subtitle')}
             </p>
-            <div className="mt-4 text-sm text-[#5d5c54]">
-              {t('features.integratedInChatbot')}
-            </div>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {governmentPortals.map((portal, index) => (
+              <a
+                key={index}
+                href={portal.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
+              >
+                <div className="flex items-start space-x-4">
+                  <div className="text-3xl mb-2">{portal.icon}</div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-[#3c392b] mb-2 group-hover:text-[#44646f] transition-colors">
+                      {portal.name}
+                    </h4>
+                    <p className="text-[#5d5c54] text-sm leading-relaxed mb-3">
+                      {portal.description}
+                    </p>
+                    <div className="flex items-center text-[#44646f] text-sm font-medium">
+                      <span>{t('portals.visitSite')}</span>
+                      <ExternalLink size={16} className="ml-1" />
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Additional Capabilities */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <div className="bg-[#44646f] bg-opacity-10 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
               <Volume2 size={32} className="text-[#44646f]" />
@@ -131,16 +206,16 @@ const FeaturesShowcase: React.FC = () => {
 
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <div className="bg-[#44646f] bg-opacity-10 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
-              <Download size={32} className="text-[#44646f]" />
+              <MapPin size={32} className="text-[#44646f]" />
             </div>
             <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
-              {t('features.pdfGenerator')}
+              {t('features.locationServices')}
             </h3>
             <p className="text-[#5d5c54] leading-relaxed">
-              {t('features.pdfGeneratorDesc')}
+              {t('features.locationServicesDesc')}
             </p>
             <div className="mt-4 text-sm text-[#5d5c54]">
-              {t('features.integratedInTDocs')}
+              {t('features.integratedInMeeseva')}
             </div>
           </div>
         </div>
