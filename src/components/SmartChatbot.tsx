@@ -1,10 +1,11 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, Volume2, MicOff, Download } from 'lucide-react';
+import { Send, Mic, Volume2, MicOff, Download, LogIn } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useVoiceInput } from '@/hooks/useVoiceInput';
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 import { generatePDF } from '@/utils/pdfGenerator';
+import AuthModal from './AuthModal';
 
 interface Message {
   id: string;
@@ -26,22 +27,120 @@ interface UserProfile {
 }
 
 const SmartChatbot: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hello! I can help you find government schemes you\'re eligible for. నమస్కారం! మీకు అర్హత ఉన్న ప్రభుత్వ పథకాలను కనుగొనడంలో నేను సహాయం చేయగలను.',
-      isUser: false,
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [userProfile, setUserProfile] = useState<UserProfile>({});
   const [currentStep, setCurrentStep] = useState(0);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const { language, t } = useLanguage();
+  const { user, sessionToken, isAuthenticated } = useAuth();
   const { isListening, transcript, startListening, stopListening, resetTranscript, isSupported: voiceSupported } = useVoiceInput();
   const { speak, isSpeaking, stop: stopSpeaking, isSupported: ttsSupported } = useTextToSpeech();
+
+  // Load chat history when user logs in
+  useEffect(() => {
+    if (isAuthenticated && sessionToken) {
+      loadChatHistory();
+    } else {
+      // Reset chat for unauthenticated users
+      setMessages([{
+        id: '1',
+        text: language === 'english' 
+          ? 'Hello! Please sign in to get personalized government scheme recommendations.' 
+          : 'నమస్కారం! వ్యక్తిగతీకరించిన ప్రభుత్వ పథక సిఫార్సులను పొందడానికి దయచేసి సైన్ ఇన్ చేయండి.',
+        isUser: false,
+        timestamp: new Date()
+      }]);
+      setCurrentStep(0);
+      setUserProfile({});
+    }
+  }, [isAuthenticated, sessionToken, language]);
+
+  const loadChatHistory = async () => {
+    if (!sessionToken) return;
+    
+    setIsLoadingHistory(true);
+    try {
+      const response = await fetch('/ApiHistory', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionToken }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.messages && data.messages.length > 0) {
+          setMessages(data.messages.map((msg: any) => ({
+            id: msg.id || Date.now().toString(),
+            text: msg.message,
+            isUser: msg.isUser,
+            timestamp: new Date(msg.timestamp),
+            hasSchemeInfo: msg.hasSchemeInfo,
+            schemeData: msg.schemeData
+          })));
+        } else {
+          // Start fresh conversation
+          startNewConversation();
+        }
+      } else {
+        startNewConversation();
+      }
+    } catch (error) {
+      console.error('Failed to load chat history:', error);
+      startNewConversation();
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  };
+
+  const startNewConversation = () => {
+    const welcomeMessage: Message = {
+      id: '1',
+      text: language === 'english'
+        ? `Hello ${user?.name}! I can help you find government schemes you're eligible for. Let me ask you a few questions to get started.`
+        : `నమస్కారం ${user?.name}! మీకు అర్హత ఉన్న ప్రభుత్వ పథకాలను కనుగొనడంలో నేను సహాయం చేయగలను. ప్రారంభించడానికి నేను మిమ్మల్ని కొన్ని ప్రశ్నలు అడుగుతాను.`,
+      isUser: false,
+      timestamp: new Date()
+    };
+    setMessages([welcomeMessage]);
+    
+    // Start questionnaire after welcome
+    setTimeout(() => {
+      const firstQuestion: Message = {
+        id: '2',
+        text: questions[language][0],
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, firstQuestion]);
+    }, 2000);
+  };
+
+  const sendMessageToBackend = async (message: string, isUser: boolean) => {
+    if (!sessionToken) return;
+
+    try {
+      await fetch('/ApiChat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionToken,
+          message,
+          isUser,
+          language
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to save message:', error);
+    }
+  };
 
   const questions = {
     english: [
@@ -176,9 +275,14 @@ const SmartChatbot: React.FC = () => {
     }
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     const messageText = inputText.trim() || transcript.trim();
     if (!messageText) return;
+
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -188,6 +292,7 @@ const SmartChatbot: React.FC = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    sendMessageToBackend(messageText, true);
 
     // Process the response if we're in questionnaire mode
     if (currentStep < questions[language].length) {
@@ -236,6 +341,7 @@ const SmartChatbot: React.FC = () => {
       
       setTimeout(() => {
         setMessages(prev => [...prev, botResponse]);
+        sendMessageToBackend(botResponse.text, false);
       }, 1000);
     }
 
@@ -244,6 +350,11 @@ const SmartChatbot: React.FC = () => {
   };
 
   const handleVoiceInput = () => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+
     if (isListening) {
       stopListening();
     } else {
@@ -287,124 +398,142 @@ const SmartChatbot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Start with first question
-  useEffect(() => {
-    if (messages.length === 1) {
-      setTimeout(() => {
-        const firstQuestion: Message = {
-          id: '2',
-          text: questions[language][0],
-          isUser: false,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, firstQuestion]);
-      }, 2000);
-    }
-  }, [language]);
+  if (isLoadingHistory) {
+    return (
+      <div className="bg-[#e1dbd1] rounded-2xl shadow-2xl overflow-hidden h-96 flex items-center justify-center">
+        <div className="text-[#44646f]">Loading chat history...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-[#e1dbd1] rounded-2xl shadow-2xl overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#44646f] p-4 flex justify-between items-center">
-        <h3 className="text-white font-semibold">SmartTalk Scheme Assistant</h3>
-        <div className="flex items-center space-x-2 text-xs text-[#cbccc1]">
-          {voiceSupported && <span>🎤</span>}
-          {ttsSupported && <span>🔊</span>}
+    <>
+      <div className="bg-[#e1dbd1] rounded-2xl shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#44646f] p-4 flex justify-between items-center">
+          <h3 className="text-white font-semibold">
+            SmartTalk Scheme Assistant
+            {user && <span className="text-sm ml-2">({user.name})</span>}
+          </h3>
+          <div className="flex items-center space-x-2 text-xs text-[#cbccc1]">
+            {voiceSupported && <span>🎤</span>}
+            {ttsSupported && <span>🔊</span>}
+          </div>
         </div>
-      </div>
 
-      {/* Chat Messages */}
-      <div className="h-96 p-6 overflow-y-auto bg-white">
-        <div className="space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-            >
+        {/* Chat Messages */}
+        <div className="h-96 p-6 overflow-y-auto bg-white">
+          <div className="space-y-4">
+            {messages.map((message) => (
               <div
-                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                  message.isUser
-                    ? 'bg-[#44646f] text-white'
-                    : 'bg-[#cbccc1] text-[#3c392b]'
-                }`}
+                key={message.id}
+                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
               >
-                <p>{message.text}</p>
-                <div className="flex items-center mt-2 space-x-2">
-                  {!message.isUser && ttsSupported && (
-                    <button
-                      onClick={() => handleTextToSpeech(message.text)}
-                      className="text-[#44646f] hover:text-[#3c392b] transition-colors"
-                      disabled={isSpeaking}
-                    >
-                      <Volume2 size={16} />
-                    </button>
-                  )}
-                  {message.hasSchemeInfo && message.schemeData && (
-                    <button
-                      onClick={() => downloadSchemeInfo(message.schemeData)}
-                      className="flex items-center space-x-1 bg-[#44646f] text-white px-2 py-1 rounded text-xs hover:bg-opacity-90 transition-colors"
-                    >
-                      <Download size={12} />
-                      <span>Download PDF</span>
-                    </button>
-                  )}
+                <div
+                  className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                    message.isUser
+                      ? 'bg-[#44646f] text-white'
+                      : 'bg-[#cbccc1] text-[#3c392b]'
+                  }`}
+                >
+                  <p>{message.text}</p>
+                  <div className="flex items-center mt-2 space-x-2">
+                    {!message.isUser && ttsSupported && (
+                      <button
+                        onClick={() => handleTextToSpeech(message.text)}
+                        className="text-[#44646f] hover:text-[#3c392b] transition-colors"
+                        disabled={isSpeaking}
+                      >
+                        <Volume2 size={16} />
+                      </button>
+                    )}
+                    {message.hasSchemeInfo && message.schemeData && (
+                      <button
+                        onClick={() => downloadSchemeInfo(message.schemeData)}
+                        className="flex items-center space-x-1 bg-[#44646f] text-white px-2 py-1 rounded text-xs hover:bg-opacity-90 transition-colors"
+                      >
+                        <Download size={12} />
+                        <span>Download PDF</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+
+        {/* Input Area */}
+        <div className="bg-[#e1dbd1] p-4 border-t border-[#cbccc1]">
+          <div className="flex items-center space-x-3">
+            {voiceSupported && (
+              <button
+                onClick={handleVoiceInput}
+                className={`p-3 rounded-lg transition-colors ${
+                  isListening 
+                    ? 'bg-red-500 text-white' 
+                    : 'bg-[#44646f] text-white hover:bg-opacity-90'
+                }`}
+                title={isListening ? 'Stop listening' : 'Start voice input'}
+              >
+                {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+              </button>
+            )}
+            
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              placeholder={
+                !isAuthenticated
+                  ? (language === 'english' ? 'Please sign in to chat...' : 'చాట్ చేయడానికి సైన్ ఇన్ చేయండి...')
+                  : (language === 'english' ? "Type your answer..." : "మీ సమాధానం టైప్ చేయండి...")
+              }
+              disabled={!isAuthenticated}
+              className="flex-1 p-3 rounded-lg border border-[#cbccc1] focus:outline-none focus:ring-2 focus:ring-[#44646f] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+            />
+            
+            {!isAuthenticated ? (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="p-3 bg-[#44646f] text-white rounded-lg hover:bg-opacity-90 transition-colors"
+                title="Sign in to chat"
+              >
+                <LogIn size={20} />
+              </button>
+            ) : (
+              <button
+                onClick={handleSendMessage}
+                className="p-3 bg-[#44646f] text-white rounded-lg hover:bg-opacity-90 transition-colors"
+                title="Send message"
+              >
+                <Send size={20} />
+              </button>
+            )}
+          </div>
+          
+          <p className="text-xs text-[#5d5c54] mt-2 text-center">
+            {!isAuthenticated 
+              ? (language === 'english' 
+                ? 'Sign in to get personalized government scheme recommendations'
+                : 'వ్యక్తిగతీకరించిన ప్రభుత్వ పథక సిఫార్సులను పొందడానికి సైన్ ఇన్ చేయండి'
+              )
+              : (language === 'english' 
+                ? 'Answer the questions to find eligible schemes. Voice input available.'
+                : 'అర్హత ఉన్న పథకాలను కనుగొనడానికి ప్రశ్నలకు సమాధానం ఇవ్వండి. వాయిస్ ఇన్‌పుట్ అందుబాటులో ఉంది.'
+              )
+            }
+          </p>
         </div>
       </div>
 
-      {/* Input Area */}
-      <div className="bg-[#e1dbd1] p-4 border-t border-[#cbccc1]">
-        <div className="flex items-center space-x-3">
-          {voiceSupported && (
-            <button
-              onClick={handleVoiceInput}
-              className={`p-3 rounded-lg transition-colors ${
-                isListening 
-                  ? 'bg-red-500 text-white' 
-                  : 'bg-[#44646f] text-white hover:bg-opacity-90'
-              }`}
-              title={isListening ? 'Stop listening' : 'Start voice input'}
-            >
-              {isListening ? <MicOff size={20} /> : <Mic size={20} />}
-            </button>
-          )}
-          
-          <input
-            type="text"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-            placeholder={
-              language === 'english' 
-                ? "Type your answer..." 
-                : "మీ సమాధానం టైప్ చేయండి..."
-            }
-            className="flex-1 p-3 rounded-lg border border-[#cbccc1] focus:outline-none focus:ring-2 focus:ring-[#44646f] focus:border-transparent"
-          />
-          
-          <button
-            onClick={handleSendMessage}
-            className="p-3 bg-[#44646f] text-white rounded-lg hover:bg-opacity-90 transition-colors"
-            title="Send message"
-          >
-            <Send size={20} />
-          </button>
-        </div>
-        
-        {voiceSupported && (
-          <p className="text-xs text-[#5d5c54] mt-2 text-center">
-            {language === 'english' 
-              ? 'Voice input and text-to-speech available. Answer the questions to find eligible schemes.'
-              : 'వాయిస్ ఇన్‌పుట్ మరియు టెక్స్ట్-టు-స్పీచ్ అందుబాటులో ఉంది. అర్హత ఉన్న పథకాలను కనుగొనడానికి ప్రశ్నలకు సమాధానం ఇవ్వండి.'
-            }
-          </p>
-        )}
-      </div>
-    </div>
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+      />
+    </>
   );
 };
 
