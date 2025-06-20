@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MessageCircle, FileText, CreditCard, MapPin, Volume2, Mic } from 'lucide-react';
+import { MessageCircle, FileText, CreditCard, MapPin, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import TDocsSystem from './TDocsSystem';
 import ENagrikCards from './ENagrikCards';
@@ -44,34 +44,40 @@ const FeaturesShowcase: React.FC = () => {
 
   const governmentPortals = [
     {
-      name: t('portals.bhuvan'),
-      description: t('portals.bhuvanDesc'),
-      icon: '🛰️'
-    },
-    {
-      name: t('portals.telanganaPortal'),
-      description: t('portals.telanganaPortalDesc'),
+      name: 'Meeseva Telangana',
+      description: 'Citizen services portal for government applications and certificates',
+      url: 'https://meeseva.telangana.gov.in/meeseva/home.htm',
       icon: '🏛️'
     },
     {
-      name: t('portals.epass'),
-      description: t('portals.epassDesc'),
+      name: 'Telangana Official Website',
+      description: 'Official government portal for policies and announcements',
+      url: 'https://www.telangana.gov.in/',
+      icon: '🏢'
+    },
+    {
+      name: 'Telangana ePASS (Scholarships)',
+      description: 'Educational scholarships and fee reimbursement portal',
+      url: 'https://telanganaepass.cgg.gov.in/',
       icon: '🎓'
     },
     {
-      name: t('portals.prajavani'),
-      description: t('portals.prajavaniDesc'),
+      name: 'Prajavani Telangana',
+      description: 'Public grievance redressal system',
+      url: 'https://prajavani.telangana.gov.in/',
       icon: '🗣️'
     },
     {
-      name: t('portals.ipass'),
-      description: t('portals.ipassDesc'),
-      icon: '🧑‍💼'
+      name: 'IPASS Telangana (Industry & Commerce)',
+      description: 'Industrial approvals and business registration portal',
+      url: 'https://ipass.telangana.gov.in/',
+      icon: '🏭'
     },
     {
-      name: t('portals.meeseva'),
-      description: t('portals.meesevaDesc'),
-      icon: '🧾'
+      name: 'Bhuvan Telangana (Geo Services)',
+      description: 'Geospatial services and land records portal',
+      url: 'https://bhuvan.nrsc.gov.in/',
+      icon: '🛰️'
     }
   ];
 
@@ -89,19 +95,9 @@ const FeaturesShowcase: React.FC = () => {
       <div className="min-h-screen bg-[#e1dbd1] py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8 flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <h2 className="text-3xl font-bold text-[#3c392b]">
-                {feature?.title}
-              </h2>
-              <div className="flex space-x-2">
-                <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors" title={t('audio.speakInTelugu')}>
-                  <Mic size={20} className="text-[#44646f]" />
-                </button>
-                <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors" title={t('audio.listenInTelugu')}>
-                  <Volume2 size={20} className="text-[#44646f]" />
-                </button>
-              </div>
-            </div>
+            <h2 className="text-3xl font-bold text-[#3c392b]">
+              {feature?.title}
+            </h2>
             <button
               onClick={closeFeature}
               className="bg-[#44646f] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
@@ -119,19 +115,9 @@ const FeaturesShowcase: React.FC = () => {
     <section id="features" className="py-20 bg-[#e1dbd1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3c392b]">
-              {t('features.title')}
-            </h2>
-            <div className="flex space-x-2">
-              <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors" title={t('audio.speakInTelugu')}>
-                <Mic size={20} className="text-[#44646f]" />
-              </button>
-              <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors" title={t('audio.listenInTelugu')}>
-                <Volume2 size={20} className="text-[#44646f]" />
-              </button>
-            </div>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#3c392b] mb-4">
+            {t('features.title')}
+          </h2>
           <p className="text-lg text-[#5d5c54] max-w-2xl mx-auto">
             {t('features.subtitle')}
           </p>
@@ -148,14 +134,9 @@ const FeaturesShowcase: React.FC = () => {
               <div className="bg-[#44646f] bg-opacity-10 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
                 {feature.icon}
               </div>
-              <div className="flex items-center space-x-2 mb-3">
-                <h3 className="text-xl font-semibold text-[#3c392b]">
-                  {feature.title}
-                </h3>
-                <button className="p-1 text-[#44646f] hover:bg-[#44646f] hover:bg-opacity-10 rounded" title={t('audio.listenInTelugu')}>
-                  <Volume2 size={14} />
-                </button>
-              </div>
+              <h3 className="text-xl font-semibold text-[#3c392b] mb-3">
+                {feature.title}
+              </h3>
               <p className="text-[#5d5c54] leading-relaxed mb-4">
                 {feature.description}
               </p>
@@ -166,24 +147,14 @@ const FeaturesShowcase: React.FC = () => {
           ))}
         </div>
 
-        {/* Government Portals Section - Links Removed */}
+        {/* Essential Government Portals Section */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              <h3 className="text-2xl md:text-3xl font-bold text-[#3c392b]">
-                {t('portals.title')}
-              </h3>
-              <div className="flex space-x-2">
-                <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors" title={t('audio.speakInTelugu')}>
-                  <Mic size={20} className="text-[#44646f]" />
-                </button>
-                <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors" title={t('audio.listenInTelugu')}>
-                  <Volume2 size={20} className="text-[#44646f]" />
-                </button>
-              </div>
-            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-[#3c392b] mb-4">
+              Essential Government Portals
+            </h3>
             <p className="text-lg text-[#5d5c54] max-w-2xl mx-auto">
-              {t('portals.subtitle')}
+              Direct access to important Telangana government services and portals
             </p>
           </div>
 
@@ -196,67 +167,25 @@ const FeaturesShowcase: React.FC = () => {
                 <div className="flex items-start space-x-4">
                   <div className="text-3xl mb-2">{portal.icon}</div>
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <h4 className="text-lg font-semibold text-[#3c392b]">
-                        {portal.name}
-                      </h4>
-                      <button className="p-1 text-[#44646f] hover:bg-[#44646f] hover:bg-opacity-10 rounded" title={t('audio.listenInTelugu')}>
-                        <Volume2 size={14} />
-                      </button>
-                    </div>
-                    <p className="text-[#5d5c54] text-sm leading-relaxed mb-3">
+                    <h4 className="text-lg font-semibold text-[#3c392b] mb-2">
+                      {portal.name}
+                    </h4>
+                    <p className="text-[#5d5c54] text-sm leading-relaxed mb-4">
                       {portal.description}
                     </p>
-                    <div className="flex items-center text-[#44646f] text-sm font-medium">
-                      <span>सेवा उपलब्ध / Service Available / సేవ అందుబాటులో</span>
-                    </div>
+                    <a
+                      href={portal.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-2 bg-[#44646f] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors text-sm font-medium"
+                    >
+                      <span>Visit</span>
+                      <ExternalLink size={14} />
+                    </a>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Additional Capabilities */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="bg-[#44646f] bg-opacity-10 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
-              <Volume2 size={32} className="text-[#44646f]" />
-            </div>
-            <div className="flex items-center space-x-2 mb-3">
-              <h3 className="text-xl font-semibold text-[#3c392b]">
-                {t('features.textToSpeech')}
-              </h3>
-              <button className="p-1 text-[#44646f] hover:bg-[#44646f] hover:bg-opacity-10 rounded" title={t('audio.listenInTelugu')}>
-                <Volume2 size={16} />
-              </button>
-            </div>
-            <p className="text-[#5d5c54] leading-relaxed">
-              {t('features.textToSpeechDesc')}
-            </p>
-            <div className="mt-4 text-sm text-[#5d5c54]">
-              {t('features.availableInChatbot')}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="bg-[#44646f] bg-opacity-10 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
-              <MapPin size={32} className="text-[#44646f]" />
-            </div>
-            <div className="flex items-center space-x-2 mb-3">
-              <h3 className="text-xl font-semibold text-[#3c392b]">
-                {t('features.locationServices')}
-              </h3>
-              <button className="p-1 text-[#44646f] hover:bg-[#44646f] hover:bg-opacity-10 rounded" title={t('audio.listenInTelugu')}>
-                <Volume2 size={16} />
-              </button>
-            </div>
-            <p className="text-[#5d5c54] leading-relaxed">
-              {t('features.locationServicesDesc')}
-            </p>
-            <div className="mt-4 text-sm text-[#5d5c54]">
-              {t('features.integratedInMeeseva')}
-            </div>
           </div>
         </div>
       </div>
