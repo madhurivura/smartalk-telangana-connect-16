@@ -44,38 +44,38 @@ const FeaturesShowcase: React.FC = () => {
 
   const governmentPortals = [
     {
-      name: t('portals.meeseva.name'),
-      description: t('portals.meeseva.description'),
+      name: 'Meeseva Telangana',
+      description: 'Citizen services portal for government applications and certificates',
       url: 'https://meeseva.telangana.gov.in/meeseva/home.htm',
       icon: '🏛️'
     },
     {
-      name: t('portals.telanganaOfficial.name'),
-      description: t('portals.telanganaOfficial.description'),
+      name: 'Telangana Official Website',
+      description: 'Official government portal for policies and announcements',
       url: 'https://www.telangana.gov.in/',
       icon: '🏢'
     },
     {
-      name: t('portals.epass.name'),
-      description: t('portals.epass.description'),
+      name: 'Telangana ePASS (Scholarships)',
+      description: 'Educational scholarships and fee reimbursement portal',
       url: 'https://telanganaepass.cgg.gov.in/',
       icon: '🎓'
     },
     {
-      name: t('portals.prajavani.name'),
-      description: t('portals.prajavani.description'),
+      name: 'Prajavani Telangana',
+      description: 'Public grievance redressal system',
       url: 'https://prajavani.telangana.gov.in/',
       icon: '🗣️'
     },
     {
-      name: t('portals.ipass.name'),
-      description: t('portals.ipass.description'),
+      name: 'IPASS Telangana (Industry & Commerce)',
+      description: 'Industrial approvals and business registration portal',
       url: 'https://ipass.telangana.gov.in/',
       icon: '🏭'
     },
     {
-      name: t('portals.bhuvan.name'),
-      description: t('portals.bhuvan.description'),
+      name: 'Bhuvan Telangana (Geo Services)',
+      description: 'Geospatial services and land records portal',
       url: 'https://bhuvan.nrsc.gov.in/',
       icon: '🛰️'
     }
@@ -179,7 +179,7 @@ const FeaturesShowcase: React.FC = () => {
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 bg-[#44646f] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors text-sm font-medium"
                     >
-                      <span>{t('portals.visitButton')}</span>
+                      <span>Visit</span>
                       <ExternalLink size={14} />
                     </a>
                   </div>
