@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Advantages from '@/components/Advantages';
@@ -14,6 +14,11 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const { t } = useLanguage();
+  
+  // Fix auto-scroll bug by ensuring page loads at top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   return (
     <div className="min-h-screen">

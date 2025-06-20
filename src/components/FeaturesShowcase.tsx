@@ -44,38 +44,38 @@ const FeaturesShowcase: React.FC = () => {
 
   const governmentPortals = [
     {
-      name: 'Meeseva Telangana',
-      description: 'Citizen services portal for government applications and certificates',
+      name: t('portals.meeseva.name'),
+      description: t('portals.meeseva.description'),
       url: 'https://meeseva.telangana.gov.in/meeseva/home.htm',
       icon: '🏛️'
     },
     {
-      name: 'Telangana Official Website',
-      description: 'Official government portal for policies and announcements',
+      name: t('portals.telanganaOfficial.name'),
+      description: t('portals.telanganaOfficial.description'),
       url: 'https://www.telangana.gov.in/',
       icon: '🏢'
     },
     {
-      name: 'Telangana ePASS (Scholarships)',
-      description: 'Educational scholarships and fee reimbursement portal',
+      name: t('portals.epass.name'),
+      description: t('portals.epass.description'),
       url: 'https://telanganaepass.cgg.gov.in/',
       icon: '🎓'
     },
     {
-      name: 'Prajavani Telangana',
-      description: 'Public grievance redressal system',
+      name: t('portals.prajavani.name'),
+      description: t('portals.prajavani.description'),
       url: 'https://prajavani.telangana.gov.in/',
       icon: '🗣️'
     },
     {
-      name: 'IPASS Telangana (Industry & Commerce)',
-      description: 'Industrial approvals and business registration portal',
+      name: t('portals.ipass.name'),
+      description: t('portals.ipass.description'),
       url: 'https://ipass.telangana.gov.in/',
       icon: '🏭'
     },
     {
-      name: 'Bhuvan Telangana (Geo Services)',
-      description: 'Geospatial services and land records portal',
+      name: t('portals.bhuvan.name'),
+      description: t('portals.bhuvan.description'),
       url: 'https://bhuvan.nrsc.gov.in/',
       icon: '🛰️'
     }
@@ -151,10 +151,10 @@ const FeaturesShowcase: React.FC = () => {
         <div className="mb-16">
           <div className="text-center mb-12">
             <h3 className="text-2xl md:text-3xl font-bold text-[#3c392b] mb-4">
-              Essential Government Portals
+              {t('portals.title')}
             </h3>
             <p className="text-lg text-[#5d5c54] max-w-2xl mx-auto">
-              Direct access to important Telangana government services and portals
+              {t('portals.subtitle')}
             </p>
           </div>
 
@@ -179,7 +179,7 @@ const FeaturesShowcase: React.FC = () => {
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 bg-[#44646f] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors text-sm font-medium"
                     >
-                      <span>Visit</span>
+                      <span>{t('portals.visitButton')}</span>
                       <ExternalLink size={14} />
                     </a>
                   </div>
