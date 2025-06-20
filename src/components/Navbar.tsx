@@ -4,114 +4,134 @@ import { Menu, X, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMenuOpen(false);
+  const handleLanguageChange = (newLanguage: 'english' | 'telugu' | 'hindi') => {
+    setLanguage(newLanguage);
+    setShowLanguageMenu(false);
   };
 
-  const toggleLanguage = () => {
-    setLanguage(language === 'english' ? 'telugu' : 'english');
+  const getLanguageLabel = () => {
+    switch (language) {
+      case 'telugu': return 'తె';
+      case 'hindi': return 'हि';
+      default: return 'EN';
+    }
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#3c392b] shadow-lg">
+    <nav className="bg-[#3c392b] text-[#e1dbd1] sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-[#e1dbd1]">SmartTalk Telangana</h1>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <button 
-                onClick={() => scrollToSection('about')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {t('nav.about')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('features')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {t('nav.features')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('chatbot')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {t('nav.chatbot')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {t('nav.contact')}
-              </button>
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <h1 className="text-xl font-bold">स्मार्ट टॉक / SmartTalk / స్మార్ట్‌టాక్</h1>
             </div>
           </div>
-
-          {/* Language Toggle & Mobile Menu */}
-          <div className="flex items-center space-x-4">
+          
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
+              <a href="#about" className="hover:bg-[#44646f] px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                {t('nav.about')}
+              </a>
+              <a href="#features" className="hover:bg-[#44646f] px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                {t('nav.features')}
+              </a>
+              <a href="#chatbot" className="hover:bg-[#44646f] px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                {t('nav.chatbot')}
+              </a>
+              <a href="#contact" className="hover:bg-[#44646f] px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                {t('nav.contact')}
+              </a>
+              
+              <div className="relative">
+                <button
+                  onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                  className="flex items-center space-x-1 hover:bg-[#44646f] px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  <Globe size={16} />
+                  <span>{getLanguageLabel()}</span>
+                </button>
+                
+                {showLanguageMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                    <button
+                      onClick={() => handleLanguageChange('english')}
+                      className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${language === 'english' ? 'bg-gray-100 font-semibold' : ''}`}
+                    >
+                      English
+                    </button>
+                    <button
+                      onClick={() => handleLanguageChange('hindi')}
+                      className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${language === 'hindi' ? 'bg-gray-100 font-semibold' : ''}`}
+                    >
+                      हिंदी (Hindi)
+                    </button>
+                    <button
+                      onClick={() => handleLanguageChange('telugu')}
+                      className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${language === 'telugu' ? 'bg-gray-100 font-semibold' : ''}`}
+                    >
+                      తెలుగు (Telugu)
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          <div className="md:hidden">
             <button
-              onClick={toggleLanguage}
-              className="flex items-center space-x-2 bg-[#44646f] text-white px-3 py-1 rounded-md text-sm hover:bg-opacity-90 transition-colors"
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md hover:bg-[#44646f] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             >
-              <Globe size={16} />
-              <span>{language === 'english' ? 'తెలుగు' : 'English'}</span>
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
+          </div>
+        </div>
+      </div>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden">
+      {isOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[#44646f]">
+            <a href="#about" className="block hover:bg-[#3c392b] px-3 py-2 rounded-md text-base font-medium">
+              {t('nav.about')}
+            </a>
+            <a href="#features" className="block hover:bg-[#3c392b] px-3 py-2 rounded-md text-base font-medium">
+              {t('nav.features')}
+            </a>
+            <a href="#chatbot" className="block hover:bg-[#3c392b] px-3 py-2 rounded-md text-base font-medium">
+              {t('nav.chatbot')}
+            </a>
+            <a href="#contact" className="block hover:bg-[#3c392b] px-3 py-2 rounded-md text-base font-medium">
+              {t('nav.contact')}
+            </a>
+            
+            <div className="pt-2 border-t border-[#3c392b]">
+              <div className="text-sm font-medium px-3 py-1 text-[#cbccc1]">भाषा / Language / భాష:</div>
               <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] p-2"
+                onClick={() => handleLanguageChange('english')}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-[#3c392b] ${language === 'english' ? 'bg-[#3c392b]' : ''}`}
               >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                English
+              </button>
+              <button
+                onClick={() => handleLanguageChange('hindi')}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-[#3c392b] ${language === 'hindi' ? 'bg-[#3c392b]' : ''}`}
+              >
+                हिंदी (Hindi)
+              </button>
+              <button
+                onClick={() => handleLanguageChange('telugu')}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-[#3c392b] ${language === 'telugu' ? 'bg-[#3c392b]' : ''}`}
+              >
+                తెలుగు (Telugu)
               </button>
             </div>
           </div>
         </div>
-
-        {/* Mobile Navigation Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[#4d4330] rounded-md mt-2">
-              <button 
-                onClick={() => scrollToSection('about')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
-              >
-                {t('nav.about')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('features')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
-              >
-                {t('nav.features')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('chatbot')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
-              >
-                {t('nav.chatbot')}
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-[#cbccc1] hover:text-[#e1dbd1] block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
-              >
-                {t('nav.contact')}
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </nav>
   );
 };
