@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Volume2, Mic } from 'lucide-react';
+import { Volume2, Mic, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface UserProfile {
@@ -17,6 +17,14 @@ interface UserProfile {
   housingType: string;
   landOwnership: string;
   chronicIllness: string;
+}
+
+interface Scheme {
+  schemeName: string;
+  description: string;
+  benefit: string;
+  eligibility: string[];
+  link: string;
 }
 
 const EnhancedSchemeQuestionnaire = () => {
@@ -37,6 +45,81 @@ const EnhancedSchemeQuestionnaire = () => {
     landOwnership: '',
     chronicIllness: ''
   });
+  const [matchedSchemes, setMatchedSchemes] = useState<Scheme[]>([]);
+
+  // Static dataset of Telangana government schemes
+  const schemes: Scheme[] = [
+    {
+      schemeName: "Kalyana Lakshmi Scheme",
+      description: "Financial assistance for marriages of girls from poor families",
+      benefit: "₹1,01,116 financial assistance",
+      eligibility: ["female", "below25", "below2.5L", "unmarried"],
+      link: "https://telanganaepass.cgg.gov.in/"
+    },
+    {
+      schemeName: "Shaadi Mubarak Scheme",
+      description: "Marriage assistance for Muslim girls",
+      benefit: "₹1,01,116 financial assistance",
+      eligibility: ["female", "muslim", "below25", "unmarried"],
+      link: "https://telanganaepass.cgg.gov.in/"
+    },
+    {
+      schemeName: "Aasara Pensions - Old Age",
+      description: "Monthly pension for senior citizens",
+      benefit: "₹2,016 per month",
+      eligibility: ["above60", "below2.5L", "rural", "urban"],
+      link: "https://webland.telangana.gov.in/"
+    },
+    {
+      schemeName: "Aasara Pensions - Widow",
+      description: "Monthly pension for widows",
+      benefit: "₹2,016 per month",
+      eligibility: ["widow", "below2.5L", "18-60"],
+      link: "https://webland.telangana.gov.in/"
+    },
+    {
+      schemeName: "Aasara Pensions - Disability",
+      description: "Monthly pension for disabled persons",
+      benefit: "₹3,016 per month",
+      eligibility: ["disability", "below2.5L"],
+      link: "https://webland.telangana.gov.in/"
+    },
+    {
+      schemeName: "Rythu Bandhu Scheme",
+      description: "Investment support for farmers",
+      benefit: "₹10,000 per acre per year",
+      eligibility: ["landOwnership", "farmer", "rural"],
+      link: "https://webland.telangana.gov.in/"
+    },
+    {
+      schemeName: "KCR Kit Scheme",
+      description: "Nutrition kit for pregnant and lactating mothers",
+      benefit: "Nutrition kit worth ₹12,000",
+      eligibility: ["female", "pregnant", "lactating", "below5L"],
+      link: "https://telanganaepass.cgg.gov.in/"
+    },
+    {
+      schemeName: "TS Vidya Volunteers",
+      description: "Teaching support in government schools",
+      benefit: "₹12,000 monthly honorarium",
+      eligibility: ["graduation", "unemployed", "below35"],
+      link: "https://schooledu.telangana.gov.in/"
+    },
+    {
+      schemeName: "Minority Welfare Scholarships",
+      description: "Educational scholarships for minority students",
+      benefit: "Up to ₹50,000 per year",
+      eligibility: ["minority", "student", "below5L"],
+      link: "https://telanganaepass.cgg.gov.in/"
+    },
+    {
+      schemeName: "BC Welfare Hostel",
+      description: "Free hostel accommodation for BC students",
+      benefit: "Free accommodation and food",
+      eligibility: ["obc", "student", "below2.5L"],
+      link: "https://telanganaepass.cgg.gov.in/"
+    }
+  ];
 
   const steps = [
     {
@@ -205,10 +288,61 @@ const EnhancedSchemeQuestionnaire = () => {
     }
   };
 
+  const mapProfileToEligibility = (profile: UserProfile): string[] => {
+    const eligibilityValues = [];
+    
+    // Age mapping
+    if (profile.age) eligibilityValues.push(profile.age);
+    
+    // Gender mapping
+    if (profile.gender) eligibilityValues.push(profile.gender);
+    
+    // Marital status mapping
+    if (profile.maritalStatus) eligibilityValues.push(profile.maritalStatus);
+    
+    // Income mapping
+    if (profile.income === 'below1L' || profile.income === '1L-2.5L') {
+      eligibilityValues.push('below2.5L');
+    } else if (profile.income === '2.5L-5L') {
+      eligibilityValues.push('below5L');
+    }
+    
+    // Category mapping
+    if (profile.category) eligibilityValues.push(profile.category);
+    
+    // Region mapping
+    if (profile.region) eligibilityValues.push(profile.region);
+    
+    // Employment mapping
+    if (profile.employment) eligibilityValues.push(profile.employment);
+    
+    // Education mapping
+    if (profile.education) eligibilityValues.push(profile.education);
+    
+    // Disability mapping
+    if (profile.disability === 'yes') eligibilityValues.push('disability');
+    
+    // Land ownership mapping
+    if (profile.landOwnership === 'yes') eligibilityValues.push('landOwnership');
+    
+    return eligibilityValues;
+  };
+
   const getRecommendations = () => {
-    // This would integrate with backend in real implementation
-    console.log('User Profile:', profile);
-    // For now, just show completion message
+    const userEligibility = mapProfileToEligibility(profile);
+    console.log('User Eligibility:', userEligibility);
+    
+    const matched = schemes.filter(scheme => {
+      const matchCount = scheme.eligibility.filter(criteria => 
+        userEligibility.includes(criteria)
+      ).length;
+      
+      console.log(`Scheme: ${scheme.schemeName}, Matches: ${matchCount}`);
+      return matchCount >= 2;
+    });
+    
+    console.log('Matched Schemes:', matched);
+    setMatchedSchemes(matched);
     setCurrentStep(steps.length);
   };
 
@@ -216,18 +350,61 @@ const EnhancedSchemeQuestionnaire = () => {
     return (
       <div className="bg-white rounded-xl p-8 shadow-lg">
         <h3 className="text-2xl font-bold text-[#3c392b] mb-6 text-center">
-          प्रोफ़ाइल पूर्ण / Profile Complete / ప్రొఫైల్ పూర్తి
+          आपके लिए उपयुक्त योजनाएं / Eligible Schemes / మీకు అర్హత ఉన్న పథకాలు
         </h3>
-        <div className="text-center">
-          <p className="text-[#5d5c54] mb-6">
-            आपकी जानकारी के आधार पर सिफारिशें तैयार की जा रही हैं...
-          </p>
-          <p className="text-[#5d5c54] mb-6">
-            Based on your information, recommendations are being prepared...
-          </p>
-          <p className="text-[#5d5c54] mb-6">
-            మీ సమాచారం ఆధారంగా, సిఫార్సులు తయారు చేయబడుతున్నాయి...
-          </p>
+        
+        {matchedSchemes.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
+            {matchedSchemes.map((scheme, index) => (
+              <div key={index} className="bg-[#cbccc1] bg-opacity-30 rounded-lg p-6 border border-[#e1dbd1]">
+                <h4 className="text-xl font-semibold text-[#3c392b] mb-3">
+                  {scheme.schemeName}
+                </h4>
+                <p className="text-[#5d5c54] mb-3">
+                  {scheme.description}
+                </p>
+                <div className="bg-[#44646f] bg-opacity-10 rounded-lg p-3 mb-4">
+                  <p className="font-medium text-[#3c392b]">
+                    <strong>लाभ / Benefit / ప్రయోజనం:</strong> {scheme.benefit}
+                  </p>
+                </div>
+                <div className="mb-4">
+                  <p className="font-medium text-[#3c392b] mb-2">
+                    पात्रता / Eligibility / అర్హత:
+                  </p>
+                  <ul className="list-disc list-inside text-[#5d5c54] space-y-1">
+                    {scheme.eligibility.map((criteria, idx) => (
+                      <li key={idx} className="text-sm">
+                        {criteria}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <button
+                  onClick={() => window.open(scheme.link, '_blank')}
+                  className="bg-[#44646f] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors flex items-center space-x-2"
+                >
+                  <span>और जानें / Know More / మరింత తెలుసుకోండి</span>
+                  <ExternalLink size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-[#5d5c54] mb-6 text-lg">
+              आपकी जानकारी के आधार पर कोई मिलान करने वाली योजना नहीं मिली।
+            </p>
+            <p className="text-[#5d5c54] mb-6 text-lg">
+              Based on your information, no matching schemes were found.
+            </p>
+            <p className="text-[#5d5c54] mb-6 text-lg">
+              మీ సమాచారం ఆధారంగా, మ్యాచింగ్ పథకాలు ఏవీ కనుగొనబడలేదు.
+            </p>
+          </div>
+        )}
+        
+        <div className="text-center mt-8">
           <button
             onClick={() => {
               setCurrentStep(0);
@@ -236,6 +413,7 @@ const EnhancedSchemeQuestionnaire = () => {
                 maritalStatus: '', disability: '', familySize: '', education: '',
                 housingType: '', landOwnership: '', chronicIllness: ''
               });
+              setMatchedSchemes([]);
             }}
             className="bg-[#44646f] text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
           >
@@ -260,10 +438,6 @@ const EnhancedSchemeQuestionnaire = () => {
             <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors">
               <Mic size={20} className="text-[#44646f]" />
               <span className="sr-only">{t('audio.speakInHindi')}</span>
-            </button>
-            <button className="p-2 bg-[#44646f] bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors">
-              <Volume2 size={20} className="text-[#44646f]" />
-              <span className="sr-only">{t('audio.listenInHindi')}</span>
             </button>
           </div>
         </div>
@@ -292,11 +466,6 @@ const EnhancedSchemeQuestionnaire = () => {
                 <h4 className="text-lg font-medium text-[#3c392b]">
                   {question.question}
                 </h4>
-                <div className="flex space-x-1">
-                  <button className="p-1 text-[#44646f] hover:bg-[#44646f] hover:bg-opacity-10 rounded">
-                    <Volume2 size={16} />
-                  </button>
-                </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
