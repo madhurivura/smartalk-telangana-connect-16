@@ -31,7 +31,7 @@ export const useVoiceInput = () => {
     setIsSupported(!!SpeechRecognition);
   }, []);
 
-  const startListening = useCallback((language: 'english' | 'telugu' = 'english') => {
+  const startListening = useCallback((language: 'english' | 'telugu' | 'hindi' = 'english') => {
     if (!isSupported) {
       setError('Speech recognition not supported');
       return;
@@ -42,7 +42,18 @@ export const useVoiceInput = () => {
 
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = language === 'telugu' ? 'te-IN' : 'en-US';
+    
+    // Map language to appropriate locale codes
+    switch (language) {
+      case 'telugu':
+        recognition.lang = 'te-IN';
+        break;
+      case 'hindi':
+        recognition.lang = 'hi-IN';
+        break;
+      default:
+        recognition.lang = 'en-US';
+    }
 
     recognition.onstart = () => {
       setIsListening(true);

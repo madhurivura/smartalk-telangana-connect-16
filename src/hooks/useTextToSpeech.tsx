@@ -18,7 +18,7 @@ export const useTextToSpeech = () => {
     window.speechSynthesis.onvoiceschanged = loadVoices;
   }, []);
 
-  const speak = useCallback((text: string, language: 'english' | 'telugu' = 'english') => {
+  const speak = useCallback((text: string, language: 'english' | 'telugu' | 'hindi' = 'english') => {
     if (!isSupported) return;
 
     // Cancel any ongoing speech
@@ -26,13 +26,29 @@ export const useTextToSpeech = () => {
 
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // Set language
-    utterance.lang = language === 'telugu' ? 'te-IN' : 'en-US';
+    // Map language to appropriate locale codes
+    switch (language) {
+      case 'telugu':
+        utterance.lang = 'te-IN';
+        break;
+      case 'hindi':
+        utterance.lang = 'hi-IN';
+        break;
+      default:
+        utterance.lang = 'en-US';
+    }
     
     // Try to find appropriate voice
-    const preferredVoice = voices.find(voice => 
-      voice.lang.startsWith(language === 'telugu' ? 'te' : 'en')
-    );
+    const preferredVoice = voices.find(voice => {
+      switch (language) {
+        case 'telugu':
+          return voice.lang.startsWith('te');
+        case 'hindi':
+          return voice.lang.startsWith('hi');
+        default:
+          return voice.lang.startsWith('en');
+      }
+    });
     
     if (preferredVoice) {
       utterance.voice = preferredVoice;
